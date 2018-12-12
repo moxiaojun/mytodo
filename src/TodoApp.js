@@ -47,9 +47,15 @@ export default class TodoApp extends Component{
     changeFilterType = (filterType)=>{
         this.setState({filterType})
     }
+    clearCompleted = ()=>{
+        let todos = this.state.todos;
+        todos = todos.filter(todo=>!todo.completed);
+        this.setState({todos});
+    }
     render(){
         let todos = this.state.todos;
         let activeTodoCount = todos.reduce((count,todo)=>count+(todo.completed?0:1),0);//count 计算结束后的返回值。
+        let completedTodoCount = todos.reduce((count,todo)=>count+(!todo.completed?0:1),0);//count 计算结束后的返回值。
         let showTodos = todos.filter((todo)=>{
             switch (this.state.filterType){
                 case filterTypes.ACTIVE://要显示未完成的
@@ -82,7 +88,12 @@ export default class TodoApp extends Component{
                                 {main}
                             </div>
                             <div className="card-footer">
-                                <TodoFooter activeTodoCount={activeTodoCount} changeFilterType={this.changeFilterType}></TodoFooter>
+                                <TodoFooter activeTodoCount={activeTodoCount}
+                                            changeFilterType={this.changeFilterType}
+                                            filterType={this.state.filterType}
+                                            clearCompleted={this.clearCompleted}
+                                            completedTodoCount={completedTodoCount}
+                                ></TodoFooter>
                             </div>
                         </div>
                     </div>
