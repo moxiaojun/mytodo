@@ -9,24 +9,18 @@ export default class TodoApp extends Component{
     constructor(props){
         super(props);//父类的钩子函数
         this.state = {
-            todos:[],
             filterType:filterTypes.ALL
         };//初始化默认状态
     }
-    addTodo = (todo)=>{
-        todo = Object.assign({},{id:Math.random(),completed:false},todo);//ES5
-        let todos = this.state.todos;
-        todos.push(todo);
-        this.setState({todos});
-    }
+
     removeTodo = (id)=>{
-        let todos = this.state.todos;
+        let todos = this.props.model.todos;
         let index = todos.findIndex(todo=>todo.id===id);
         todos.splice(index,1);
         this.setState({todos});
     }
     toggle = (id)=>{
-        let todos = this.state.todos;
+        let todos = this.props.model.todos;
         todos.map(todo=>{
             if (todo.id===id){
                 todo.completed = !todo.completed;
@@ -48,12 +42,12 @@ export default class TodoApp extends Component{
         this.setState({filterType})
     }
     clearCompleted = ()=>{
-        let todos = this.state.todos;
+        let todos = this.props.model.todos;
         todos = todos.filter(todo=>!todo.completed);
         this.setState({todos});
     }
     render(){
-        let todos = this.state.todos;
+        let todos = this.props.model.todos;
         let activeTodoCount = todos.reduce((count,todo)=>count+(todo.completed?0:1),0);//count 计算结束后的返回值。
         let completedTodoCount = todos.reduce((count,todo)=>count+(!todo.completed?0:1),0);//count 计算结束后的返回值。
         let showTodos = todos.filter((todo)=>{
@@ -82,7 +76,7 @@ export default class TodoApp extends Component{
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-header">
-                                <TodoHeader addTodo={this.addTodo}/>
+                                <TodoHeader addTodo={this.props.model.addTodo}/>
                             </div>
                             <div className="card-body">
                                 {main}
