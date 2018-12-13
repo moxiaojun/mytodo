@@ -12,39 +12,8 @@ export default class TodoApp extends Component{
             filterType:filterTypes.ALL
         };//初始化默认状态
     }
-
-    removeTodo = (id)=>{
-        let todos = this.props.model.todos;
-        let index = todos.findIndex(todo=>todo.id===id);
-        todos.splice(index,1);
-        this.setState({todos});
-    }
-    toggle = (id)=>{
-        let todos = this.props.model.todos;
-        todos.map(todo=>{
-            if (todo.id===id){
-                todo.completed = !todo.completed;
-            }
-            return todo
-        });
-        this.setState({todos});
-    }
-    toggleAll = (event)=>{
-        let checked = event.target.checked;
-        let todos = this.state.todos;
-        todos.map(todo=>{
-            todo.completed = checked;
-            return todo;
-        });
-        this.setState({todos});
-    }
     changeFilterType = (filterType)=>{
         this.setState({filterType})
-    }
-    clearCompleted = ()=>{
-        let todos = this.props.model.todos;
-        todos = todos.filter(todo=>!todo.completed);
-        this.setState({todos});
     }
     render(){
         let todos = this.props.model.todos;
@@ -63,10 +32,10 @@ export default class TodoApp extends Component{
         let main = (
             <ul className="list-group">
                 {
-                    todos.length>0?<li className="list-group-item"><input type="checkbox" onChange={this.toggleAll} checked={activeTodoCount===0}/>{activeTodoCount===0?'全部取消':'全部选中'}</li>:''
+                    todos.length>0?<li className="list-group-item"><input type="checkbox" onChange={this.props.model.toggleAll} checked={activeTodoCount===0}/>{activeTodoCount===0?'全部取消':'全部选中'}</li>:''
                 }
                 {
-                    showTodos.map((todo,index)=><TodoItem key={index} todo={todo} toggle={this.toggle} removeTodo={this.removeTodo}/>)
+                    showTodos.map((todo,index)=><TodoItem key={index} todo={todo} toggle={this.props.model.toggle} removeTodo={this.props.model.removeTodo}/>)
                 }
             </ul>
         );
@@ -83,9 +52,9 @@ export default class TodoApp extends Component{
                             </div>
                             <div className="card-footer">
                                 <TodoFooter activeTodoCount={activeTodoCount}
-                                            changeFilterType={this.changeFilterType}
+                                            changeFilterType={this.props.model.changeFilterType}
                                             filterType={this.state.filterType}
-                                            clearCompleted={this.clearCompleted}
+                                            clearCompleted={this.props.model.clearCompleted}
                                             completedTodoCount={completedTodoCount}
                                 ></TodoFooter>
                             </div>

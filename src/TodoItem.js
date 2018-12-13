@@ -12,7 +12,7 @@ export default class TodoItem extends Component{
                         {todo.title}
                     </div>
                     <div className="col-md-1">
-                        <button className="btn btn-danger btn-xs" onClick={()=>this.props.removeTodo(todo.id)}>X</button>
+                        <button className="btn btn-danger btn-sm" onClick={()=>this.props.removeTodo(todo.id)}>X</button>
                     </div>
                 </div>
             </li>
